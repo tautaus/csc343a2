@@ -20,7 +20,7 @@ create VIEW zeroToFive AS
                 join election on election_result.election_id = election.id)
                 join country on country.id = election.country_id
     WHERE election_result.votes/election.votes_valid > 0 and 
-        election_result.votes/election.votes_valid <= 0.05
+        election_result.votes/election.votes_valid <= 0.05;
 
 create VIEW fiveToTen AS
     SELECT date_part('year',e_date) as year, country.name as countryName, '(0,5]' as voteRange, party.name as partyName
@@ -28,7 +28,7 @@ create VIEW fiveToTen AS
                 join election on election_result.election_id = election.id)
                 join country on country.id = election.country_id
     WHERE election_result.votes/election.votes_valid > 0.05 and 
-        election_result.votes/election.votes_valid <= 0.1
+        election_result.votes/election.votes_valid <= 0.1;
 
 create VIEW tenToTwenty AS
     SELECT date_part('year',e_date) as year, country.name as countryName, '(0,5]' as voteRange, party.name as partyName
@@ -36,7 +36,7 @@ create VIEW tenToTwenty AS
                 join election on election_result.election_id = election.id)
                 join country on country.id = election.country_id
     WHERE election_result.votes/election.votes_valid > 0.1 and 
-        election_result.votes/election.votes_valid <= 0.2
+        election_result.votes/election.votes_valid <= 0.2;
 
 create VIEW twentyToThirty AS
     SELECT date_part('year',e_date) as year, country.name as countryName, '(0,5]' as voteRange, party.name as partyName
@@ -44,7 +44,7 @@ create VIEW twentyToThirty AS
                 join election on election_result.election_id = election.id)
                 join country on country.id = election.country_id
     WHERE election_result.votes/election.votes_valid > 0.2 and 
-        election_result.votes/election.votes_valid <= 0.3
+        election_result.votes/election.votes_valid <= 0.3;
 
 create VIEW thirtyToForty AS
     SELECT date_part('year',e_date) as year, country.name as countryName, '(0,5]' as voteRange, party.name as partyName
@@ -52,14 +52,15 @@ create VIEW thirtyToForty AS
                 join election on election_result.election_id = election.id)
                 join country on country.id = election.country_id
     WHERE election_result.votes/election.votes_valid > 0.3 and 
-        election_result.votes/election.votes_valid <= 0.4
+        election_result.votes/election.votes_valid <= 0.4;
 
 create VIEW moreThanForty AS
     SELECT date_part('year',e_date) as year, country.name as countryName, '(0,5]' as voteRange, party.name as partyName
     FROM ((party join election_result on party.id = election_result.party_id) 
                 join election on election_result.election_id = election.id)
                 join country on country.id = election.country_id
-    WHERE election_result.votes/election.votes_valid > 0.4     
+    WHERE election_result.votes/election.votes_valid > 0.4;
+     
 -- that define your intermediate steps.  (But give them better names!)
 -- DROP VIEW IF EXISTS intermediate_step CASCADE;
 
