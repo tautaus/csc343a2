@@ -76,11 +76,11 @@ create view twenty as
     where range > 0.4
     ;
 
+	 		
     INSERT into q1
     select year,countryName,range,partyName
     from five
     ;
-
     INSERT into q1
     select year,countryName,range,partyName
     from ten
@@ -106,4 +106,5 @@ create view twenty as
     from more
     ;
 
-    
+    drop view if exists more cascade;
+    drop view if exists total1 cascade;	    
