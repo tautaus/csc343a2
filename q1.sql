@@ -29,15 +29,15 @@ create view total2 AS
 ;
 
 create view range AS
-    select  party_id, country_id, year, totalParty/total as range
-    From total1 join total2 on total1.party_id = total2.party_id and total1.country_id = total2.country_id
-    and total1.year = total2.year
+    select total1.party_id, total1.country_id,total1.year, totalParty/total as range
+    From total1 join total2 on (total1.party_id = total2.party_id and total1.country_id = total2.country_id
+    and total1.year = total2.year)
     ;
 
 create view infor AS
     select year, country.name as countryName , range, name_short as partyName
     from party, country, range
-    where party.id = party_id, country.id = country_id
+    where party.id = party_id and country.id =range.country_id
 ;
 
 create view five as 
@@ -77,7 +77,7 @@ create view twenty as
     ;
 
     INSERT into q1
-    select *
+    select year,countryName,range,partyName
     from five,ten,twenty,thirty,forty,more
 
     
