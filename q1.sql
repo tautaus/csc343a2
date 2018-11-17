@@ -14,60 +14,70 @@ partyName VARCHAR(100)
 
 
 -- You may find it convenient to do this for each of the views
-create VIEW zeroToFive AS
-    SELECT date_part('year',e_date) as year, country.name as countryName, '(0,5]' as voteRange, party.name as partyName
-    FROM ((party join election_result on party.id = election_result.party_id) 
-                join election on election_result.election_id = election.id)
-                join country on country.id = election.country_id
-    WHERE election_result.votes/election.votes_valid > 0 and 
-        election_result.votes/election.votes_valid <= 0.05;
+-- total for party
+create view total1 AS
+    select party_id, country_id, date_part('year',e_date) as year ,sum(votes) as totalParty
+    FROM election, election_result
+    GROUP BY party_id, country_id, date_part('year',e_date)
+;
 
-create VIEW fiveToTen AS
-    SELECT date_part('year',e_date) as year, country.name as countryName, '(0,5]' as voteRange, party.name as partyName
-    FROM ((party join election_result on party.id = election_result.party_id) 
-                join election on election_result.election_id = election.id)
-                join country on country.id = election.country_id
-    WHERE election_result.votes/election.votes_valid > 0.05 and 
-        election_result.votes/election.votes_valid <= 0.1;
+-- total for country votes
+create view total2 AS
+    select party_id, country_id, date_part('year',e_date) as year, sum(votes_valid) as total
+    From election join election_result on election_result.election_id = election.id
+    group by party_id, country_id, date_part('year',e_date)
+;
 
-create VIEW tenToTwenty AS
-    SELECT date_part('year',e_date) as year, country.name as countryName, '(0,5]' as voteRange, party.name as partyName
-    FROM ((party join election_result on party.id = election_result.party_id) 
-                join election on election_result.election_id = election.id)
-                join country on country.id = election.country_id
-    WHERE election_result.votes/election.votes_valid > 0.1 and 
-        election_result.votes/election.votes_valid <= 0.2;
+create view range AS
+    select  party_id, country_id, year, totalParty/total as range
+    From total1 join total2 on total1.party_id = total2.party_id and total1.country_id = total2.country_id
+    and total1.year = total2.year
+    ;
 
-create VIEW twentyToThirty AS
-    SELECT date_part('year',e_date) as year, country.name as countryName, '(0,5]' as voteRange, party.name as partyName
-    FROM ((party join election_result on party.id = election_result.party_id) 
-                join election on election_result.election_id = election.id)
-                join country on country.id = election.country_id
-    WHERE election_result.votes/election.votes_valid > 0.2 and 
-        election_result.votes/election.votes_valid <= 0.3;
+create view infor AS
+    select year, country.name as countryName , range, name_short as partyName
+    from party, country, range
+    where party.id = party_id, country.id = country_id
+;
 
-create VIEW thirtyToForty AS
-    SELECT date_part('year',e_date) as year, country.name as countryName, '(0,5]' as voteRange, party.name as partyName
-    FROM ((party join election_result on party.id = election_result.party_id) 
-                join election on election_result.election_id = election.id)
-                join country on country.id = election.country_id
-    WHERE election_result.votes/election.votes_valid > 0.3 and 
-        election_result.votes/election.votes_valid <= 0.4;
+create view five as 
+    select year, countryName, '(0,5]' as range, partyName
+    from infor
+    where range > 0 and range <= 0.05
+    ;
 
-create VIEW moreThanForty AS
-    SELECT date_part('year',e_date) as year, country.name as countryName, '(0,5]' as voteRange, party.name as partyName
-    FROM ((party join election_result on party.id = election_result.party_id) 
-                join election on election_result.election_id = election.id)
-                join country on country.id = election.country_id
-    WHERE election_result.votes/election.votes_valid > 0.4;
-     
--- that define your intermediate steps.  (But give them better names!)
--- DROP VIEW IF EXISTS intermediate_step CASCADE;
+create view ten as 
+    select year, countryName, '(5,10]' as range, partyName
+    from infor
+    where range > 0.05 and range <= 0.1
+    ;
 
--- Define views for your intermediate steps here.
+create view twenty as 
+    select year, countryName, '(10,20]' as range, partyName
+    from infor
+    where range > 0.1 and range <= 0.2
+    ;
 
+    create view thirty as 
+    select year, countryName, '(20,30]' as range, partyName
+    from infor
+    where range > 0.2 and range <= 0.3
+    ;
 
--- the answer to the query 
-insert into q1 
-select *
-from zeroToFive, fiveToTen, tenToTwenty, twentyToThirty, thirtyToForty, moreThanForty
+    create view forty as 
+    select year, countryName, '(30,40]' as range, partyName
+    from infor
+    where range > 0.3 and range <= 0.4
+    ;
+
+    create view more as 
+    select year, countryName, '(40,100]' as range, partyName
+    from infor
+    where range > 0.4
+    ;
+
+    INSERT into q1
+    select *
+    from five,ten,twenty,thirty,forty,more
+
+    
