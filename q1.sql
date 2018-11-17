@@ -22,4 +22,5 @@ DROP VIEW IF EXISTS intermediate_step CASCADE;
 
 -- the answer to the query 
 insert into q1 
+haah
 
