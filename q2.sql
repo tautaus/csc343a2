@@ -14,15 +14,17 @@ mostRecentlyWonElectionId INT,
 mostRecentlyWonElectionYear INT
 );
 
+create view winline as
+select election_id, max(votes) as line
+from election_result
+group by election_id
+; 
+
 create view winner as 
-select election_id, party_id
-From election_result
-where exists(
-    select *
-    from election_result er 
-    where election_result.votes = max(er.votes) and election_result.election_id = er.election_id
-    group by er.election_id
-)；
+select election_result.election_id, party_id
+From election_result, winline
+where election_result.election_id = winline.election_id and votes > line
+;
 
 create view winner1 AS
 select party_id,count(*) as counts
@@ -51,11 +53,11 @@ group by (party_id)
 create view recent_year AS
 select party_id, election_id, date_part('year',e_date) as year
 from recent_winner, election
-where recent_winner.id = election.id
+where recent_winner.election_id = election.id
 ;
 
 create view party_infor AS
-select party.id as party_id, name as partyName, country.name as countryName, party_family.family as partyFamily
+select party.id as party_id, party.name as partyName, country.name as countryName, party_family.family as partyFamily
 from (party join country on party.country_id = country.id) join party_family on party.id = party_family.party_id
 ;
 
