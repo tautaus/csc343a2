@@ -77,6 +77,33 @@ create view twenty as
     ;
 
     INSERT into q1
-    (select *
-    from five,ten,twenty,thirty,forty,more
-    );
+    select year,countryName,range,partyName
+    from five
+    ;
+
+    INSERT into q1
+    select year,countryName,range,partyName
+    from ten
+    ;
+
+    INSERT into q1
+    select year,countryName,range,partyName
+    from twenty
+    ;
+
+    INSERT into q1
+    select year,countryName,range,partyName
+    from thirty
+    ;
+
+    INSERT into q1
+    select year,countryName,range,partyName
+    from forty
+    ;
+
+    INSERT into q1
+    select year,countryName,range,partyName
+    from more
+    ;
+
+    
