@@ -12,9 +12,9 @@ create table q3(
 );
 
 create view ratio as 
-select country_id, year, sum(votes_cast)/sum(electorate) as ratio
+select country_id, date_part('year' ,e_date) as year, sum(votes_cast)/sum(electorate) as ratio
 from election
-group by (country_id, date_part('year',e_date) as year)
+group by (country_id, date_part('year',e_date) )
 ;
 
 create view ct as
