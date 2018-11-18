@@ -58,7 +58,7 @@ group by name
 create view answer AS
 select count1.name, c1, c2, c3, c4, c5
 from count1, count2, count3, count4, count5
-where count1.name = count2.name, count2.name = count3.name, count3.name = count4.name , count4.name = count5.name
+where count1.name = count2.name and count2.name = count3.name and count3.name = count4.name and count4.name = count5.name
 ;
 
 -- You may find it convenient to do this for each of the views
