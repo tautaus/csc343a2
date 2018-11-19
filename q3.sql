@@ -11,7 +11,7 @@ create table q3(
         participationRatio real
 );
 
-drop view if EXISTS ratio,ct,ctt,answer cascade
+drop view if EXISTS ratio,ct,ctt,answer cascade;
 
 create view ratio as 
 select country_id, date_part('year' ,e_date) as year, avg(cast(votes_cast as real)/electorate) as ratio
