@@ -16,7 +16,7 @@ partyName VARCHAR(100)
 -- You may find it convenient to do this for each of the views
 -- total for party
 create view total AS
-    select party_id, country_id, date_part('year',e_date) as year ,votes/votes_valid as ratio as totalParty
+    select party_id, country_id, date_part('year',e_date) as year ,votes/votes_valid as ratio 
     FROM election join election_result on election_result.election_id = election.id
     where date_part('year',e_date) >= 1996 and date_part('year',e_date) <= 2016
 ;
