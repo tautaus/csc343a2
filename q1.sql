@@ -13,6 +13,7 @@ partyName VARCHAR(100)
 );
 
 
+drop view if exists total,range,infor,five,ten,twenty,thirty,forty,more cascade;
 -- You may find it convenient to do this for each of the views
 -- total for party
 create view total AS
@@ -99,5 +100,3 @@ create view twenty as
     select year,countryName,range,partyName
     from more
     ;
-
-    drop view if exists more cascade;
