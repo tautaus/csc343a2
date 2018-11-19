@@ -39,6 +39,7 @@ from winner1 JOIN party on winner1.party_id = party.id
 GROUP BY country_id
 ;
 
+
 create view countrywin AS
 select party.country_id, winner1.party_id,counts
 from (winner1 JOIN party on winner1.party_id = party.id) join countryavg on party.country_id = countryavg.country_id
