@@ -36,37 +36,37 @@ create view infor AS
 ;
 
 create view five as 
-    select year, countryName, '(0,5]' as range, partyName
+    select year, countryName, '(0-5]' as range, partyName
     from infor
     where range > 0 and range <= 0.05
     ;
 
 create view ten as 
-    select year, countryName, '(5,10]' as range, partyName
+    select year, countryName, '(5-10]' as range, partyName
     from infor
     where range > 0.05 and range <= 0.1
     ;
 
 create view twenty as 
-    select year, countryName, '(10,20]' as range, partyName
+    select year, countryName, '(10-20]' as range, partyName
     from infor
     where range > 0.1 and range <= 0.2
     ;
 
     create view thirty as 
-    select year, countryName, '(20,30]' as range, partyName
+    select year, countryName, '(20-30]' as range, partyName
     from infor
     where range > 0.2 and range <= 0.3
     ;
 
     create view forty as 
-    select year, countryName, '(30,40]' as range, partyName
+    select year, countryName, '(30-40]' as range, partyName
     from infor
     where range > 0.3 and range <= 0.4
     ;
 
     create view more as 
-    select year, countryName, '(40,100]' as range, partyName
+    select year, countryName, '(40-100]' as range, partyName
     from infor
     where range > 0.4
     ;
