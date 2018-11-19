@@ -45,7 +45,7 @@ from (winner1 JOIN party on winner1.party_id = party.id) join countryavg on part
 where counts > average
 ;
 
-insert q2
+insert into q2
 select 'a','a','a',country_id,party_id,counts
 from countrywin;
 
@@ -61,9 +61,9 @@ from recent_winner, election
 where recent_winner.election_id = election.id
 ;
 
-insert q2
-select 'a','a','a',party,election_id,year
-from countrywin;
+insert into q2
+select 'a','a','a',party_id,election_id,year
+from recent_year;
 
 create view party_infor AS
 select party.id as party_id, party.name as partyName, country.name as countryName, party_family.family as partyFamily
