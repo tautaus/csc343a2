@@ -40,14 +40,11 @@ GROUP BY country_id
 ;
 
 create view countrywin AS
-select party.country_id, winner1.party_id,counts
+select party.country_id, winner1.party_id,counts,party.name
 from (winner1 JOIN party on winner1.party_id = party.id) join countryavg on party.country_id = countryavg.country_id
 where counts > average
 ;
 
-insert into q2
-select 'a','a','a',country_id,party_id,counts
-from countrywin;
 
 create view recent_winner as
 select party_id, max(election_id) as election_id
@@ -61,20 +58,16 @@ from recent_winner, election
 where recent_winner.election_id = election.id
 ;
 
-insert into q2
-select 'a','a','a',party_id,election_id,year
-from recent_year;
 
 create view party_infor AS
-select party.id as party_id, party.name as partyName, country.name as countryName, party_family.family as partyFamily
-from (party join country on party.country_id = country.id) join party_family on party.id = party_family.party_id
+select countrywin.party_id as party_id, countrywin.name as partyName, country.name as countryName, party_family.family as partyFamily,counts
+from (countrywin join country on countrywin.country_id = country.id) join party_family on countrywin.party_id = party_family.party_id
 ;
 
 
 create view answer AS
 select countryName, partyName, partyFamily, counts as wonElections, election_id, year
-from (recent_year join countrywin on recent_year.party_id = countrywin.party_id) 
-    join party_infor on countrywin.party_id = party_infor.party_id
+from recent_year join party_infor on recent_year.party_id = party_infor.party_id
 ;
 
 -- You may find it convenient to do this for each of the views
