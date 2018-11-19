@@ -23,7 +23,7 @@ group by election_id
 create view winner as 
 select election_result.election_id, party_id
 From election_result, winline
-where election_result.election_id = winline.election_id and votes > line
+where election_result.election_id = winline.election_id and votes = line
 ;
 
 create view winner1 AS
