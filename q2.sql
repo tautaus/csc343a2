@@ -14,6 +14,7 @@ mostRecentlyWonElectionId INT,
 mostRecentlyWonElectionYear INT
 );
 
+DROP VIEW IF EXISTS winline,winner,winner1,countryavg,countrywin,recent_winner,recent_year,party_infor,answer CASCADE;
 create view winline as
 select election_id, max(votes) as line
 from election_result
@@ -81,4 +82,3 @@ select countryName, partyName, partyFamily, wonElections,election_id, year
 from answer
 ;
 
-DROP VIEW IF EXISTS answer CASCADE;
