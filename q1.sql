@@ -101,7 +101,7 @@ create view twenty as
     ;
 
     insert into q1
-    select year,countryName,range,partyName
+    select year,countryName,cast( range as varchar(20)),partyName
     from infor
     ;
     
