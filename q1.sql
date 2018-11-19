@@ -101,8 +101,8 @@ create view twenty as
     ;
 
     insert into q1
-    select year,countryName,range,partyName
-    from infor
+    select year,cast(country_id as varchar(50)),cast(ratio as VARCHAR(20)),cast(party_id as varchar(100))
+    from total
     ;
-    
+
     drop view if exists more cascade;
