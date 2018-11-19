@@ -61,10 +61,10 @@ where recent_winner.election_id = election.id
 
 create view party_infor AS
 select countrywin.party_id as party_id, countrywin.name as partyName, country.name as countryName, party_family.family as partyFamily,counts
-from (countrywin join country on countrywin.country_id = country.id) join party_family on countrywin.party_id = party_family.party_id
+from (countrywin join country on countrywin.country_id = country.id) left join party_family on countrywin.party_id = party_family.party_id
 ;
 
-
+ 
 create view answer AS
 select countryName, partyName, partyFamily, counts as wonElections, election_id, year
 from recent_year join party_infor on recent_year.party_id = party_infor.party_id
