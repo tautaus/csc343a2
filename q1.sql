@@ -15,23 +15,17 @@ partyName VARCHAR(100)
 
 -- You may find it convenient to do this for each of the views
 -- total for party
-create view total1 AS
-    select party_id, country_id, date_part('year',e_date) as year ,sum(votes) as totalParty
-    FROM election, election_result
-    GROUP BY party_id, country_id, date_part('year',e_date)
+create view total AS
+    select party_id, country_id, date_part('year',e_date) as year ,votes/votes_valid as ratio as totalParty
+    FROM election join election_result on election_result.election_id = election.id
+    where date_part('year',e_date) >= 1996 and date_part('year',e_date) <= 2016
 ;
 
--- total for country votes
-create view total2 AS
-    select party_id, country_id, date_part('year',e_date) as year, sum(votes_valid) as total
-    From election join election_result on election_result.election_id = election.id
-    group by party_id, country_id, date_part('year',e_date)
-;
 
 create view range AS
-    select total1.party_id, total1.country_id,total1.year, totalParty/total as range
-    From total1 join total2 on (total1.party_id = total2.party_id and total1.country_id = total2.country_id
-    and total1.year = total2.year)
+    select party_id,country_id,year,avg(ratio) as range
+    from total
+    GROUP BY party_id, country_id, year
     ;
 
 create view infor AS
@@ -107,4 +101,3 @@ create view twenty as
     ;
 
     drop view if exists more cascade;
-    drop view if exists total1 cascade;	    
