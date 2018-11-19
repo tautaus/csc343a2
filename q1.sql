@@ -16,9 +16,9 @@ partyName VARCHAR(100)
 -- You may find it convenient to do this for each of the views
 -- total for party
 create view total AS
-    select party_id, country_id, date_part('year',e_date) as year ,votes/votes_valid as ratio 
+    select party_id, country_id, date_part('year',e_date) as year ,votes/votes_valid as ratio
     FROM election join election_result on election_result.election_id = election.id
-    where date_part('year',e_date) >= 1996 and date_part('year',e_date) <= 2016
+    where date_part('year',e_date) >= 1996 and date_part('year',e_date) <= 2016 
 ;
 
 
@@ -26,7 +26,7 @@ create view range AS
     select party_id,country_id,year,avg(ratio) as range
     from total
     GROUP BY party_id, country_id, year
-    ;
+;
 
 create view infor AS
     select year, country.name as countryName , range, name_short as partyName
@@ -100,4 +100,9 @@ create view twenty as
     from more
     ;
 
+    insert into q1
+    select year,countryName,range,partyName
+    from infor
+    ;
+    
     drop view if exists more cascade;
