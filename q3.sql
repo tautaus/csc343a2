@@ -12,8 +12,9 @@ create table q3(
 );
 
 create view ratio as 
-select country_id, date_part('year' ,e_date) as year, sum(votes_cast)/sum(electorate) as ratio
+select country_id, date_part('year' ,e_date) as year, avg(votes_cast/electorate) as ratio
 from election
+where votes_cast > 0
 group by (country_id, date_part('year',e_date) )
 ;
 
