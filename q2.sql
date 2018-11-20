@@ -46,9 +46,17 @@ GROUP BY party.country_id
 ;
 
 create view countryavg as
-select partynum.country_id, cast(total as real)/num as average
+select partynum.country_id, 3*cast(total as real)/num as average
 from partynum join countrytotal on partynum.country_id = countrytotal.country_id
 ;
+
+insert into q2
+select 'a','a','a',average,country_id,1
+from countryavg;
+
+insert into q2
+select 'b','a','a',counts,1,1
+from winner1;
 
 create view countrywin AS
 select party.country_id, winner1.party_id,counts,party.name
