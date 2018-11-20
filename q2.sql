@@ -50,33 +50,18 @@ select partynum.country_id, 3*cast(total as real)/num as average
 from partynum join countrytotal on partynum.country_id = countrytotal.country_id
 ;
 
-insert into q2
-select 'a','a','a',average,country_id,1
-from countryavg;
-
-insert into q2
-select 'b','a','a',counts,1,1
-from winner1;
-
 create view countrywin AS
 select party.country_id, winner1.party_id,counts,party.name
 from (winner1 JOIN party on winner1.party_id = party.id) join countryavg on party.country_id = countryavg.country_id
 where counts > average
 ;
 
-
-create view recent_winner as
-select party_id, max(election_id) as election_id
-from winner
-group by (party_id)
-;
-
 create view recent_year AS
-select party_id, election_id, date_part('year',e_date) as year
-from recent_winner, election
-where recent_winner.election_id = election.id
+select party_id, election_id, max(date_part('year',e_date)) as year
+from winner, election
+where winner.election_id = election.id
+group by party_id
 ;
-
 
 create view party_infor AS
 select countrywin.party_id as party_id, countrywin.name as partyName, country.name as countryName, party_family.family as partyFamily,counts
