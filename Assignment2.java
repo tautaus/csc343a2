@@ -78,7 +78,7 @@ public class Assignment2 extends JDBCSubmission {
         return new ArrayList<>();
       }
       String str2 = "select id,description from politician_president" +
-          "where description is not null and id != ?";
+         "where id <> ? and description is not null";
       ps = this.connection.prepareStatement(str2);
       ps.setInt(1, politicianName);
       resultSet = ps.executeQuery();
