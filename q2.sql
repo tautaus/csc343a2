@@ -33,11 +33,18 @@ from winner
 group by party_id
 ;
 
-create view countryavg as 
-select country_id, avg(counts) + 3 as average
-from winner1 JOIN party on winner1.party_id = party.id
-GROUP BY country_id
+create view partynum as
+select country_id, count(*) as num
+from party
+group by country_id
 ;
+
+create view countryavg as 
+select country_id, 3 * avg(cast(counts as real)/num) as average
+from winner1 JOIN partynum on winner1.party_id = partynum.country_id
+GROUP BY partynum.country_id
+;
+
 
 create view countrywin AS
 select party.country_id, winner1.party_id,counts,party.name
@@ -82,4 +89,3 @@ insert into q2
 select countryName, partyName, partyFamily, wonElections,election_id, year
 from answer
 ;
-
