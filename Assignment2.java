@@ -46,7 +46,7 @@ public class Assignment2 extends JDBCSubmission {
   public ElectionCabinetResult electionSequence(String countryName) {
     try {
       String str1 =
-          "select cabinet.id, previous_parliament_election_id "
+          "select cabinet.id, election_id "
               + "from cabinet join country on cabinet.country_id = country.id "
               + "where country.name = ?";
       PreparedStatement ps = this.connection.prepareStatement(str1);
@@ -56,9 +56,7 @@ public class Assignment2 extends JDBCSubmission {
       ResultSet resultSet = ps.executeQuery();
       while (resultSet.next()) {
         elections.add(resultSet.getInt(2));
-        System.out.println(resultSet.getInt(2));
         cabinets.add(resultSet.getInt(1));
-        System.out.println(resultSet.getInt(1));
       }
       return new ElectionCabinetResult(elections, cabinets);
     } catch (SQLException e) {
