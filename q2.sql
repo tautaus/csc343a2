@@ -14,7 +14,7 @@ mostRecentlyWonElectionId INT,
 mostRecentlyWonElectionYear INT
 );
 
-DROP VIEW IF EXISTS winline,winner,winner1,countryavg,countrywin,recent_winner,recent_year,party_infor,answer CASCADE;
+DROP VIEW IF EXISTS winline,winner,winner1,partynum,countrytotal,countryavg,countrywin,recent_winner,recent_year,party_infor,answer CASCADE;
 create view winline as
 select election_id, max(votes) as line
 from election_result
@@ -39,12 +39,16 @@ from party
 group by country_id
 ;
 
-create view countryavg as 
-select country_id, 3 * avg(cast(counts as real)/num) as average
-from winner1 JOIN partynum on winner1.party_id = partynum.country_id
-GROUP BY partynum.country_id
+create view countrytotal as 
+select party.country_id, sum(counts) as total
+from winner1 join party on winner1.party_id = party.id
+GROUP BY party.country_id
 ;
 
+create view countryavg as
+select partynum.country_id, cast(total as real)/num as average
+from partynum join countrytotal on partynum.country_id = countrytotal.country_id
+;
 
 create view countrywin AS
 select party.country_id, winner1.party_id,counts,party.name
