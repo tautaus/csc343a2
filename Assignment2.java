@@ -84,7 +84,8 @@ public class Assignment2 extends JDBCSubmission {
       while (resultSet.next()) {
         id = resultSet.getInt(1);
         des = resultSet.getString(2);
-        if (similarity(polDes, des) >= threshold) {
+	System.out.println(similarity(polDes,des));
+        if (similarity(polDes, des) >= threshold && id != politicianName){
           politician.add(id);
         }
       }
@@ -102,6 +103,7 @@ public class Assignment2 extends JDBCSubmission {
       String url = "jdbc:postgresql://localhost:5432/csc343h-suntao7";
       ass.connectDB(url,"suntao7","");
       ass.electionSequence("Canada");
+      ass.findSimilarPoliticians(9,0);	
     }catch (ClassNotFoundException e) {
       e.printStackTrace();
     }
