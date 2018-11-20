@@ -1,10 +1,6 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -60,7 +56,9 @@ public class Assignment2 extends JDBCSubmission {
       ResultSet resultSet = ps.executeQuery();
       while (resultSet.next()) {
         elections.add(resultSet.getInt(2));
+        System.out.println(resultSet.getInt(2));
         cabinets.add(resultSet.getInt(1));
+        System.out.println(resultSet.getInt(1));
       }
       return new ElectionCabinetResult(elections, cabinets);
     } catch (SQLException e) {
@@ -104,9 +102,8 @@ public class Assignment2 extends JDBCSubmission {
     try{
       Assignment2 ass = new Assignment2();
       String url = "jdbc:postgresql://localhost:5432/csc343h-suntao7";
-      if (ass.connectDB(url,"suntao7","")){
-        System.out.println(123);
-      }
+      ass.connectDB(url,"suntao7","");
+      ass.electionSequence("Canada");
     }catch (ClassNotFoundException e) {
       e.printStackTrace();
     }
