@@ -16,7 +16,7 @@ public class Assignment2 extends JDBCSubmission {
 
   public Assignment2() throws ClassNotFoundException {
 
-      Class.forName("org.postgresql.Driver");
+    Class.forName("org.postgresql.Driver");
   }
 
   @Override
@@ -74,7 +74,11 @@ public class Assignment2 extends JDBCSubmission {
       ResultSet resultSet = ps.executeQuery();
       resultSet.next();
       String polDes = resultSet.getString(1);
-      String str2 = "select id,description from politician_president" + "where id != ?";
+      if (polDes == null){
+        return new ArrayList<>();
+      }
+      String str2 = "select id,description from politician_president" +
+          "where description is not null and id != ?";
       ps = this.connection.prepareStatement(str2);
       ps.setInt(1, politicianName);
       resultSet = ps.executeQuery();
@@ -84,8 +88,8 @@ public class Assignment2 extends JDBCSubmission {
       while (resultSet.next()) {
         id = resultSet.getInt(1);
         des = resultSet.getString(2);
-	System.out.println(similarity(polDes,des));
-        if (similarity(polDes, des) >= threshold && id != politicianName){
+        System.out.println(similarity(polDes,des));
+        if (similarity(polDes, des) >= threshold && !politicianName.equals(id)){
           politician.add(id);
         }
       }
@@ -103,7 +107,7 @@ public class Assignment2 extends JDBCSubmission {
       String url = "jdbc:postgresql://localhost:5432/csc343h-suntao7";
       ass.connectDB(url,"suntao7","");
       ass.electionSequence("Canada");
-      ass.findSimilarPoliticians(9,0);	
+      ass.findSimilarPoliticians(9,(float)0);
     }catch (ClassNotFoundException e) {
       e.printStackTrace();
     }
