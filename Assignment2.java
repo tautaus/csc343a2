@@ -88,8 +88,7 @@ public class Assignment2 extends JDBCSubmission {
       while (resultSet.next()) {
         id = resultSet.getInt(1);
         des = resultSet.getString(2);
-        System.out.println(similarity(polDes,des));
-        if (similarity(polDes, des) >= threshold && !politicianName.equals(id)){
+        if (similarity(polDes, des) >= threshold){
           politician.add(id);
         }
       }
