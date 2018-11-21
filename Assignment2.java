@@ -78,7 +78,7 @@ public class Assignment2 extends JDBCSubmission {
         return new ArrayList<>();
       }
       String str2 = "select id,description from politician_president" +
-         "where id <> ? and description is not null";
+          " where description is not null and id != ?";
       ps = this.connection.prepareStatement(str2);
       ps.setInt(1, politicianName);
       resultSet = ps.executeQuery();
@@ -88,8 +88,7 @@ public class Assignment2 extends JDBCSubmission {
       while (resultSet.next()) {
         id = resultSet.getInt(1);
         des = resultSet.getString(2);
-        System.out.println(similarity(polDes,des));
-        if (similarity(polDes, des) >= threshold && !politicianName.equals(id)){
+        if (similarity(polDes, des) >= threshold){
           politician.add(id);
         }
       }
