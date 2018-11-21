@@ -69,13 +69,9 @@ group by party_id
 ;
 
 create view recent_year AS
-select recent_winner.party_id, winner_election.election_id, date
-from recent_winner
-where exists(
-    select *
-    from winner_election
-    where recent_winner.party_id = winner_election.party_id and recent_winner.date = winner_election.e_date
-);
+select recent_winner.party_id, winner_election.election_id,date
+from recent_winner join winner_election on recent_winner.party_id = winner_election.party_id and recent_winner.date = winner_election.e_date
+;
 
 
 create view party_infor AS
@@ -85,7 +81,7 @@ from (countrywin join country on countrywin.country_id = country.id) left join p
 
  
 create view answer AS
-select countryName, partyName, partyFamily, counts as wonElections, election_id, year
+select countryName, partyName, partyFamily, counts as wonElections, election_id, date_part('year',date) as year
 from recent_year join party_infor on recent_year.party_id = party_infor.party_id
 ;
 
