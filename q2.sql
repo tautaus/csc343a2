@@ -14,7 +14,7 @@ mostRecentlyWonElectionId INT,
 mostRecentlyWonElectionYear INT
 );
 
-DROP VIEW IF EXISTS winline,winner,winner1,partynum,countrytotal,countryavg,countrywin,recent_winner,recent_year,party_infor,answer CASCADE;
+DROP VIEW IF EXISTS winline,winner,winner1,partynum,countrytotal,countryavg,countrywin,winner_election,recent_winner,recent_year,party_infor,answer CASCADE;
 create view winline as
 select election_id, max(votes) as line
 from election_result
@@ -56,12 +56,27 @@ from (winner1 JOIN party on winner1.party_id = party.id) join countryavg on part
 where counts > average
 ;
 
-create view recent_year AS
-select party_id, election_id, max(date_part('year',e_date)) as year
-from winner, election
-where winner.election_id = election.id
+
+create view winner_election as
+select party_id, winner.election_id, e_date
+from winner join election on winner.election_id = election.id
+;
+
+create view recent_winner AS
+select party_id, max(e_date) as date
+from winner_election
 group by party_id
 ;
+
+create view recent_year AS
+select recent_winner.party_id, winner_election.election_id, date
+from recent_winner
+where exists(
+    select *
+    from winner_election
+    where recent_winner.party_id = winner_election.party_id and recent_winner.date = winner_election.e_date
+);
+
 
 create view party_infor AS
 select countrywin.party_id as party_id, countrywin.name as partyName, country.name as countryName, party_family.family as partyFamily,counts
